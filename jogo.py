@@ -2,6 +2,7 @@ import pygame
 import math
 import os
 from random import randint
+from module import *
 
 # Initialize the pygame
 pygame.init()
@@ -37,7 +38,7 @@ def game_over_text():
     SCREEN.blit(game_over, (200, 250))
 
 # Player
-player_img = pygame.image.load(os.path.join("assets", "spaceship.png"))
+player_img = carregar_imagem("assets", "spaceship.png")
 playerX = 370
 playerY = 480
 change_playerX = 0
@@ -45,7 +46,7 @@ change_playerX = 0
 def player(x, y):
     SCREEN.blit(player_img, (x, y))
 
-# Alien
+# Alien 1
 alien_img = []
 alienX = []
 alienY = []
@@ -53,24 +54,15 @@ alienX_change = []
 alienY_change = []
 alien_down = []
 num_aliens = 8
-for i in range(num_aliens):
-    alien_img.append(pygame.image.load("assets\\alien.png"))
-    alienX.append(randint(0, 735))
-    alienY.append(randint(50, 150))
-    alienX_change.append(1)
-    alienY_change.append(40)
-    alien_down.append(False)
+initialize_aliens('alien.png', alien_img, alienX, alienY, alienX_change, alienY_change, alien_down, num_aliens)
 
+def alien(x, y):
+    SCREEN.blit(alien_img[i], (x, y))
 def alien(x, y):
     SCREEN.blit(alien_img[i], (x, y))
 
 # Bullet
-bullet_img = pygame.image.load("assets\\bullet.png")
-bulletX = 0
-bulletY = 480
-bulletX_change = 0
-bulletY_change = 5
-bullet_state = "ready"
+initialize_bullet()
 
 def fire_bullet(x, y):
     global bullet_state
@@ -116,7 +108,7 @@ while running:
     elif game_state == "playing":
         # Spawning enemies
         for i in range(num_aliens):
-            alien_img.append(pygame.image.load("assets\\alien.png"))
+            alien_img.append(carregar_imagem("assets", "alien.png"))
             alienX.append(randint(0, 735))
             alienY.append(randint(50, 150))
             alienX_change.append(1)
@@ -129,7 +121,7 @@ def alien(x, y):
 
 
 # Bullet
-bullet_img = pygame.image.load("assets\\bullet.png")
+bullet_img = carregar_imagem("assets", "bullet.png")
 bulletX = 0
 bulletY = 480
 bulletX_change = 0
@@ -247,6 +239,29 @@ while running:
         fire_bullet(bulletX, bulletY)
         bulletY -= bulletY_change
 
+    fase = 1
+    
+    if score_value == 5:
+        fase += 1
+        score_value = 0  # Reseta o valor do score para 0
+
+    # Verifica a fase atual e define o background correspondente
+    if fase == 2:
+        BACKGROUND = carregar_imagem ("assets", "mar2.png")
+        player_img = carregar_imagem ("assets", "submarine2.png")
+        bullet_state = 'Not Ready'
+        # Alien 2
+        alien2_img = []
+        alien2X = []
+        alien2Y = []
+        alien2X_change = []
+        alien2Y_change = []
+        alien2_down = []
+        num_aliens = 1
+        initialize_aliens('octopus3.png', alien2_img, alien2X, alien2Y, alien2X_change, alien2Y_change, alien2_down, num_aliens)
+
+
+    # Atualiza a tela
     player(playerX, playerY)
     show_score(TEST_X, TEST_Y)
     pygame.display.update()
